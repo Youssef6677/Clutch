@@ -1,5 +1,6 @@
 import React from 'react'
 import SubjectCard from './SubjectCard'
+import AvatarProfile from './AvatarProfile'
 
 const Dashboard = () => {
   const subjects = [
@@ -35,9 +36,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      <header className="mb-10">
-        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Tableau de Bord</h2>
-        <p className="mt-2 text-lg text-gray-600">Suivez votre progression de révision par matière.</p>
+      <AvatarProfile />
+      
+      <header className="mb-10 border-l-8 border-gray-800 pl-6 py-2">
+        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight" style={{ fontFamily: 'monospace' }}>Quêtes de Révision</h2>
+        <p className="mt-2 text-lg font-bold text-gray-600 uppercase tracking-widest">Suivez votre progression par matière.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
