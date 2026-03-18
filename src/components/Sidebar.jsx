@@ -1,30 +1,40 @@
 import React from 'react'
 
-const Sidebar = () => {
+const Sidebar = ({ currentView, setView }) => {
   const links = [
-    { name: 'Dashboard', icon: '🏠' },
-    { name: 'Tâches', icon: '📋' },
-    { name: 'Flashcards', icon: '🗂️' },
-    { name: 'Paramètres', icon: '⚙️' },
+    { id: 'dashboard', name: 'Dashboard', icon: '🏠' },
+    { id: 'tasks', name: 'Tâches', icon: '📋' },
+    { id: 'flashcards', name: 'Flashcards', icon: '🗂️' },
+    { id: 'settings', name: 'Paramètres', icon: '⚙️' },
   ]
 
   return (
-    <div className="w-64 h-screen bg-white shadow-lg fixed left-0 top-0 border-r border-gray-100">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-blue-600">Révision App</h1>
+    <div className="w-64 h-screen bg-white shadow-lg fixed left-0 top-0 border-r-8 border-gray-800">
+      <div className="p-8 border-b-8 border-gray-800">
+        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+          CLUTCH
+        </h1>
+        <div className="h-2 w-12 bg-yellow-400 mt-1 border-2 border-gray-800 shadow-[2px_2px_0px_rgba(31,41,55,1)]"></div>
       </div>
-      <nav className="mt-6">
+      <nav className="mt-8 space-y-2 px-4">
         {links.map((link) => (
-          <a
-            key={link.name}
-            href="#"
-            className="flex items-center px-6 py-4 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors duration-200 border-l-4 border-transparent hover:border-blue-600"
+          <button
+            key={link.id}
+            onClick={() => setView(link.id)}
+            className={`w-full flex items-center px-4 py-4 font-black uppercase tracking-tight transition-all duration-200 border-4 border-transparent rounded-lg ${
+              currentView === link.id 
+                ? 'bg-gray-800 text-white border-gray-950 shadow-[4px_4px_0px_rgba(31,41,55,1)] translate-x-1' 
+                : 'text-gray-700 hover:bg-gray-100 hover:border-gray-800 hover:translate-x-1'
+            }`}
           >
-            <span className="mr-3 text-xl">{link.icon}</span>
-            <span className="font-medium">{link.name}</span>
-          </a>
+            <span className="mr-3 text-2xl">{link.icon}</span>
+            <span className="font-bold text-sm tracking-widest">{link.name}</span>
+          </button>
         ))}
       </nav>
+      <div className="absolute bottom-0 w-full p-4 border-t-4 border-gray-100">
+        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">v1.0.0-BETA</p>
+      </div>
     </div>
   )
 }
