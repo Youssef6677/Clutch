@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
 import Tasks from './components/Tasks'
+import Flashcards from './components/Flashcards'
 
 function App() {
   const [currentView, setCurrentView] = useState('dashboard')
@@ -12,6 +13,8 @@ function App() {
         return <Dashboard />
       case 'tasks':
         return <Tasks />
+      case 'flashcards':
+        return <Flashcards />
       default:
         return (
           <div className="p-20 text-center">
