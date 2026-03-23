@@ -8,12 +8,14 @@ import Auth from './components/Auth'
 
 function App() {
   const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [currentView, setCurrentView] = useState('dashboard')
 
   useEffect(() => {
     // Récupérer la session actuelle au chargement
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      setLoading(false)
     })
 
     // Écouter les changements d'état d'authentification
@@ -21,6 +23,7 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
+      setLoading(false)
     })
 
     return () => subscription.unsubscribe()
@@ -43,6 +46,16 @@ function App() {
           </div>
         )
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl font-black text-gray-800 uppercase animate-pulse">
+          Chargement de la session...
+        </div>
+      </div>
+    )
   }
 
   // Si pas de session, on affiche uniquement le composant Auth
