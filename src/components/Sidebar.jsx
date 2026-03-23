@@ -1,4 +1,5 @@
 import React from 'react'
+import { supabase } from '../supabaseClient'
 
 const Sidebar = ({ currentView, setView }) => {
   const links = [
@@ -8,15 +9,21 @@ const Sidebar = ({ currentView, setView }) => {
     { id: 'settings', name: 'Paramètres', icon: '⚙️' },
   ]
 
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) console.error("Erreur déconnexion :", error.message)
+  }
+
   return (
-    <div className="w-64 h-screen bg-white shadow-lg fixed left-0 top-0 border-r-8 border-gray-800">
+    <div className="w-64 h-screen bg-white shadow-lg fixed left-0 top-0 border-r-8 border-gray-800 flex flex-col">
       <div className="p-8 border-b-8 border-gray-800">
         <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
           CLUTCH
         </h1>
         <div className="h-2 w-12 bg-yellow-400 mt-1 border-2 border-gray-800 shadow-[2px_2px_0px_rgba(31,41,55,1)]"></div>
       </div>
-      <nav className="mt-8 space-y-2 px-4">
+      
+      <nav className="mt-8 space-y-2 px-4 flex-1">
         {links.map((link) => (
           <button
             key={link.id}
@@ -32,7 +39,14 @@ const Sidebar = ({ currentView, setView }) => {
           </button>
         ))}
       </nav>
-      <div className="absolute bottom-0 w-full p-4 border-t-4 border-gray-100">
+
+      <div className="p-4 border-t-8 border-gray-800 bg-gray-50 space-y-4">
+        <button 
+          onClick={handleSignOut}
+          className="w-full bg-rose-400 text-gray-900 p-3 border-4 border-gray-800 border-b-8 border-b-rose-600 hover:border-b-4 hover:translate-y-1 active:scale-95 transition-all text-[10px] font-black uppercase rounded-lg shadow-[4px_4px_0px_rgba(31,41,55,1)]"
+        >
+          Se Déconnecter
+        </button>
         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">v1.0.0-BETA</p>
       </div>
     </div>
