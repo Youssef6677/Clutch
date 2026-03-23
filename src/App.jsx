@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from './supabaseClient'
+import { supabase } from '../supabaseClient'
 import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
 import Tasks from './components/Tasks'
