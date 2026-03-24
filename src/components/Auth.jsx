@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { supabase } from '../../supabaseClient.js'
+import { supabase } from '../supabaseClient.js'
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
