@@ -1,11 +1,11 @@
 import React from 'react'
 import Sidebar from './Sidebar'
 
-const Layout = ({ currentView, setView, children }) => {
+const Layout = ({ currentView, setView, xpUpdateTrigger, children }) => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Barre latérale */}
-      <Sidebar currentView={currentView} setView={setView} />
+      <Sidebar currentView={currentView} setView={setView} xpUpdateTrigger={xpUpdateTrigger} />
 
       {/* Contenu principal */}
       <main className="flex-1 ml-64 p-10">

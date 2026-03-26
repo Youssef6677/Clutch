@@ -1,26 +1,29 @@
 import React from 'react'
 import { supabase } from '../supabaseClient.js'
+import PlayerStats from './PlayerStats'
 
-const Sidebar = ({ currentView, setView }) => {
+const Sidebar = ({ currentView, setView, xpUpdateTrigger }) => {
   const links = [
     { id: 'dashboard', name: 'Dashboard', icon: '🏠' },
     { id: 'tasks', name: 'Tâches', icon: '📋' },
     { id: 'flashcards', name: 'Flashcards', icon: '🗂️' },
+    { id: 'timetable', name: 'Agenda', icon: '📅' },
     { id: 'settings', name: 'Paramètres', icon: '⚙️' },
   ]
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabase.signOut()
     if (error) console.error("Erreur déconnexion :", error.message)
   }
 
   return (
     <div className="w-64 h-screen bg-white shadow-lg fixed left-0 top-0 border-r-8 border-gray-800 flex flex-col">
       <div className="p-8 border-b-8 border-gray-800">
-        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter mb-4" style={{ fontFamily: 'monospace' }}>
           CLUTCH
         </h1>
-        <div className="h-2 w-12 bg-yellow-400 mt-1 border-2 border-gray-800 shadow-[2px_2px_0px_rgba(31,41,55,1)]"></div>
+        
+        <PlayerStats refreshTrigger={xpUpdateTrigger} />
       </div>
       
       <nav className="mt-8 space-y-2 px-4 flex-1">

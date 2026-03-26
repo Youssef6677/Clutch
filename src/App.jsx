@@ -4,12 +4,14 @@ import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
 import Tasks from './components/Tasks'
 import Flashcards from './components/Flashcards'
+import SchedulePage from './components/SchedulePage'
 import Auth from './components/Auth'
 
 function App() {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentView, setCurrentView] = useState('dashboard')
+  const [xpUpdateTrigger, setXpUpdateTrigger] = useState(0)
 
   useEffect(() => {
     // Récupérer la session actuelle au chargement
@@ -29,14 +31,20 @@ function App() {
     return () => subscription.unsubscribe()
   }, [])
 
+  const triggerXpUpdate = () => {
+    setXpUpdateTrigger(prev => prev + 1)
+  }
+
   const renderView = () => {
     switch (currentView) {
       case 'dashboard':
         return <Dashboard />
       case 'tasks':
-        return <Tasks />
+        return <Tasks onXpGain={triggerXpUpdate} />
       case 'flashcards':
         return <Flashcards />
+      case 'timetable':
+        return <SchedulePage />
       default:
         return (
           <div className="p-20 text-center">
@@ -64,7 +72,7 @@ function App() {
   }
 
   return (
-    <Layout currentView={currentView} setView={setCurrentView}>
+    <Layout currentView={currentView} setView={setCurrentView} xpUpdateTrigger={xpUpdateTrigger}>
       {renderView()}
     </Layout>
   )
