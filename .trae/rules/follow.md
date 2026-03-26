@@ -11,10 +11,19 @@
 - Ne crée pas de sous-dossiers inutiles. Garde une structure plate dans `src/components` pour l'instant.
 
 ## Règles de Base de Données (Supabase)
-- Nous utilisons l'architecture à 5 tables : `profiles`, `tasks`, `subjects`, `decks`, `flashcards`.
+- Nous utilisons l'architecture à 7 tables : `profiles`, `tasks`, `subjects`, `decks`, `flashcards`, `timetable`, `resources`.
 - La clé primaire est TOUJOURS `id` (UUID généré par `gen_random_uuid()`).
 - Toute table (sauf `profiles`) possède une clé étrangère `user_id` qui pointe vers `profiles(id)`.
+- **Schéma Flashcards :** Un Deck (`decks`) possède un `name` et un `subject_id` obligatoire. Une Flashcard (`flashcards`) possède un `front` (question) et un `back` (réponse).
+- **Schéma Ressources :** Les ressources sont liées à un `subject_id` et possèdent une `category` ('Cours', 'TD', 'Annales').
 - **Ne propose jamais de requêtes SQL complexes dans le frontend.** Utilise toujours le SDK Supabase JS officiel (ex: `supabase.from('table').select('*')`).
+
+## Règles Métier (Gamification)
+- **Seuil de Niveau :** Utilise toujours une constante `XP_PER_LEVEL = 100`.
+- **Gains d'XP :**
+    - Validation d'une tâche : +10 XP.
+    - Session Flashcards : +1 XP par carte unique (max 20 XP par session).
+- **Attribution XP :** Toujours récupérer l'utilisateur via `supabase.auth.getUser()` avant une mise à jour de profil pour garantir la sécurité et la précision.
 
 ## Comportement de l'IA
 - Ne modifie pas l'architecture de la base de données sans me demander l'autorisation.

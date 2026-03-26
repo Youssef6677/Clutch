@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient.js'
+import { getUserRank } from '../utils/ranks.js'
 
-const PlayerStats = ({ refreshTrigger }) => {
+const PlayerStats = () => {
+  const XP_PER_LEVEL = 100
   const [stats, setStats] = useState({ level: 1, xp: 0 })
   const [loading, setLoading] = useState(true)
 
@@ -27,9 +29,18 @@ const PlayerStats = ({ refreshTrigger }) => {
 
   useEffect(() => {
     fetchStats()
-  }, [refreshTrigger])
 
-  const xpPercentage = Math.min((stats.xp / 100) * 100, 100)
+    // Écouter l'événement global de mise à jour du profil
+    window.addEventListener('profileUpdated', fetchStats)
+    
+    return () => {
+      window.removeEventListener('profileUpdated', fetchStats)
+    }
+  }, [])
+
+  const rank = getUserRank(stats.level)
+  const xpPercentage = Math.min((stats.xp / XP_PER_LEVEL) * 100, 100)
+  const avatarUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/${rank.pokemonId}.png`
 
   if (loading) return (
     <div className="p-4 border-4 border-gray-800 bg-white rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] animate-pulse">
@@ -44,12 +55,30 @@ const PlayerStats = ({ refreshTrigger }) => {
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
       
       <div className="relative z-10">
-        <div className="flex justify-between items-end mb-2">
-          <span className="text-2xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
-            LVL {stats.level}
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 bg-[#fefefe] border-2 border-gray-800 rounded overflow-hidden p-1 shadow-[inset_0px_0px_5px_rgba(0,0,0,0.05)] flex items-center justify-center">
+            <img 
+              src={avatarUrl} 
+              alt="Avatar" 
+              style={{ imageRendering: 'pixelated', width: 'auto', height: '100%', display: 'block', margin: '0 auto' }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-black text-gray-900 uppercase tracking-tighter leading-none" style={{ fontFamily: 'monospace' }}>
+              LVL {stats.level}
+            </span>
+            <span className="text-[9px] font-black text-yellow-600 uppercase tracking-tight mt-1">
+              {rank.title}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-end mb-1">
+          <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">
+            Expérience
           </span>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">
-            {stats.xp} / 100 XP
+          <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">
+            {stats.xp} / 100
           </span>
         </div>
 

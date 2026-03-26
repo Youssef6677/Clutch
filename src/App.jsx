@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient.js'
 import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
-import Tasks from './components/Tasks'
-import Flashcards from './components/Flashcards'
+import TasksPage from './components/TasksPage'
+import FlashcardsPage from './components/FlashcardsPage'
 import SchedulePage from './components/SchedulePage'
+import Subjects from './components/Subjects'
+import PomodoroPage from './components/PomodoroPage'
+import GlobalTimerWidget from './components/GlobalTimerWidget'
 import Auth from './components/Auth'
+import { PomodoroProvider } from './context/PomodoroContext'
 
 function App() {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentView, setCurrentView] = useState('dashboard')
-  const [xpUpdateTrigger, setXpUpdateTrigger] = useState(0)
 
   useEffect(() => {
     // Récupérer la session actuelle au chargement
@@ -31,18 +34,18 @@ function App() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const triggerXpUpdate = () => {
-    setXpUpdateTrigger(prev => prev + 1)
-  }
-
   const renderView = () => {
     switch (currentView) {
       case 'dashboard':
         return <Dashboard />
       case 'tasks':
-        return <Tasks onXpGain={triggerXpUpdate} />
+        return <TasksPage />
+      case 'pomodoro':
+        return <PomodoroPage />
+      case 'subjects':
+        return <Subjects />
       case 'flashcards':
-        return <Flashcards />
+        return <FlashcardsPage />
       case 'timetable':
         return <SchedulePage />
       default:
@@ -72,9 +75,12 @@ function App() {
   }
 
   return (
-    <Layout currentView={currentView} setView={setCurrentView} xpUpdateTrigger={xpUpdateTrigger}>
-      {renderView()}
-    </Layout>
+    <PomodoroProvider>
+      <Layout currentView={currentView} setView={setCurrentView}>
+        <GlobalTimerWidget />
+        {renderView()}
+      </Layout>
+    </PomodoroProvider>
   )
 }
 

@@ -2,9 +2,11 @@ import React from 'react'
 import { supabase } from '../supabaseClient.js'
 import PlayerStats from './PlayerStats'
 
-const Sidebar = ({ currentView, setView, xpUpdateTrigger }) => {
+const Sidebar = ({ currentView, setView }) => {
   const links = [
     { id: 'dashboard', name: 'Dashboard', icon: '🏠' },
+    { id: 'subjects', name: 'Matières', icon: '📚' },
+    { id: 'pomodoro', name: 'Concentration', icon: '⏳' },
     { id: 'tasks', name: 'Tâches', icon: '📋' },
     { id: 'flashcards', name: 'Flashcards', icon: '🗂️' },
     { id: 'timetable', name: 'Agenda', icon: '📅' },
@@ -12,7 +14,7 @@ const Sidebar = ({ currentView, setView, xpUpdateTrigger }) => {
   ]
 
   const handleSignOut = async () => {
-    const { error } = await supabase.signOut()
+    const { error } = await supabase.auth.signOut()
     if (error) console.error("Erreur déconnexion :", error.message)
   }
 
@@ -23,7 +25,7 @@ const Sidebar = ({ currentView, setView, xpUpdateTrigger }) => {
           CLUTCH
         </h1>
         
-        <PlayerStats refreshTrigger={xpUpdateTrigger} />
+        <PlayerStats />
       </div>
       
       <nav className="mt-8 space-y-2 px-4 flex-1">

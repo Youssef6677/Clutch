@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { supabase } from '../supabaseClient.js'
+import './SchedulePage.css'
 
 const SchedulePage = () => {
   const [events, setEvents] = useState([])
@@ -116,17 +117,6 @@ const SchedulePage = () => {
       </header>
 
       <div className="bg-white border-8 border-gray-800 rounded-xl p-4 shadow-[8px_8px_0px_rgba(31,41,55,1)] overflow-hidden">
-        <style>{`
-          .fc { font-family: 'monospace', sans-serif; }
-          .fc-header-toolbar { padding: 1rem; text-transform: uppercase; font-weight: 900; }
-          .fc-col-header-cell { background: #1f2937; color: white; padding: 10px 0 !important; }
-          .fc-timegrid-slot { height: 3rem !important; }
-          .fc-event { border-width: 3px !important; border-radius: 4px !important; box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
-          .fc-v-event { background-color: var(--fc-event-bg-color); }
-          .fc-theme-standard td, .fc-theme-standard th { border-color: #e5e7eb !important; border-width: 2px !important; }
-          .fc-timegrid-now-indicator-line { border-color: #ef4444 !important; border-width: 3px !important; }
-        `}</style>
-        
         {loading ? (
           <div className="h-[600px] flex items-center justify-center font-black uppercase animate-pulse">
             Synchronisation du chronogramme...
