@@ -68,35 +68,35 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div>
+    <div className="space-y-12">
       <AvatarProfile />
       
-      <header className="mb-10 border-l-8 border-gray-800 pl-6 py-2">
-        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight" style={{ fontFamily: 'monospace' }}>Quêtes de Révision</h2>
-        <p className="mt-2 text-lg font-bold text-gray-600 uppercase tracking-widest">Suivez votre progression par matière.</p>
+      <header className="mb-10 border-l-8 border-yellow-400 pl-6 py-2">
+        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+          ⚔️ Journal de Campagne
+        </h2>
+        <p className="mt-2 text-sm font-bold text-gray-500 uppercase tracking-[0.3em]">
+          Suivez votre progression et accomplissez vos quêtes.
+        </p>
       </header>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="bg-white border-4 border-gray-800 rounded-lg p-6 shadow-[4px_4px_0px_rgba(31,41,55,1)] animate-pulse">
-              <div className="h-8 bg-gray-200 w-1/2 mb-6"></div>
-              <div className="space-y-4">
-                <div className="h-10 bg-gray-100 w-full"></div>
-                <div className="h-10 bg-gray-100 w-full"></div>
-                <div className="h-10 bg-gray-100 w-full"></div>
-              </div>
-            </div>
+            <div key={i} className="bevel-3d-deep h-64 animate-pulse"></div>
           ))}
         </div>
       ) : subjectStats.length === 0 ? (
-        <div className="bg-white border-4 border-gray-800 p-8 rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-          <p className="text-2xl font-black text-gray-400 uppercase tracking-widest italic" style={{ fontFamily: 'monospace' }}>
-            Aucune matière trouvée. Allez à la Bibliothèque pour en ajouter !
+        <div className="bevel-3d-deep bg-white/50 backdrop-blur-sm p-16 text-center">
+          <p className="text-2xl font-black text-gray-400 uppercase tracking-[0.2em] italic mb-6" style={{ fontFamily: 'monospace' }}>
+            Aucune quête trouvée dans votre grimoire.
           </p>
+          <button className="bevel-3d-yellow px-8 py-3 font-black uppercase text-sm tracking-widest hover:translate-y-0.5 transition-all">
+            Explorer la Bibliothèque 📚
+          </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {subjectStats.map((subject) => (
             <SubjectCard key={subject.id} subject={subject} />
           ))}

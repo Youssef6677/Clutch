@@ -8,6 +8,7 @@ import SchedulePage from './components/SchedulePage'
 import Subjects from './components/Subjects'
 import PomodoroPage from './components/PomodoroPage'
 import GlobalTimerWidget from './components/GlobalTimerWidget'
+import SpotifyWidget from './components/SpotifyWidget'
 import Auth from './components/Auth'
 import { PomodoroProvider } from './context/PomodoroContext'
 
@@ -78,6 +79,7 @@ function App() {
     <PomodoroProvider>
       <Layout currentView={currentView} setView={setCurrentView}>
         <GlobalTimerWidget />
+        <SpotifyWidget />
         {renderView()}
       </Layout>
     </PomodoroProvider>
