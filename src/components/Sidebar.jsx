@@ -19,9 +19,9 @@ const Sidebar = ({ currentView, setView }) => {
   }
 
   return (
-    <div className="w-64 h-screen fixed left-0 top-0 border-r-4 border-gray-800 flex flex-col z-50">
+    <div className="w-64 h-screen fixed left-0 top-0 border-r-4 border-gray-800 dark:border-slate-700 bg-white dark:bg-slate-900 flex flex-col z-50 transition-colors duration-300">
       <div className="p-6">
-        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter mb-6 text-center" style={{ fontFamily: 'monospace' }}>
+        <h1 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6 text-center" style={{ fontFamily: 'monospace' }}>
           CLUTCH
         </h1>
         
@@ -36,8 +36,8 @@ const Sidebar = ({ currentView, setView }) => {
               onClick={() => setView(link.id)}
               className={`w-full flex items-center px-4 py-3 font-black uppercase tracking-tight transition-all duration-200 border-2 ${
                 currentView === link.id 
-                  ? 'bg-gray-800 text-white border-gray-900 shadow-[2px_2px_0px_rgba(0,0,0,1)] -translate-y-0.5' 
-                  : 'text-gray-700 hover:bg-gray-100 border-transparent hover:border-gray-800 hover:-translate-y-0.5'
+                  ? 'bg-gray-800 dark:bg-slate-700 text-white border-gray-900 dark:border-slate-600 shadow-[2px_2px_0px_rgba(0,0,0,1)] -translate-y-0.5' 
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 border-transparent hover:border-gray-800 dark:hover:border-slate-600 hover:-translate-y-0.5'
               }`}
             >
               <span className="mr-3 text-xl">{link.icon}</span>

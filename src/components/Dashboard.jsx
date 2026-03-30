@@ -71,11 +71,11 @@ const Dashboard = () => {
     <div className="space-y-12">
       <AvatarProfile />
       
-      <header className="mb-10 border-l-8 border-yellow-400 pl-6 py-2">
-        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+      <header className="mb-10 border-l-8 border-yellow-400 pl-6 py-2 transition-colors duration-300">
+        <h2 className="text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
           ⚔️ Journal de Campagne
         </h2>
-        <p className="mt-2 text-sm font-bold text-gray-500 uppercase tracking-[0.3em]">
+        <p className="mt-2 text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.3em]">
           Suivez votre progression et accomplissez vos quêtes.
         </p>
       </header>

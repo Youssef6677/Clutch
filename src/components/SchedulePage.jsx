@@ -10,6 +10,27 @@ const SchedulePage = () => {
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [userId, setUserId] = useState(null)
+  const [isRecurring, setIsRecurring] = useState(false)
+  const [visibleEvents, setVisibleEvents] = useState([])
+
+  const colors = [
+    '#fbbf24', // yellow-400
+    '#60a5fa', // blue-400
+    '#34d399', // emerald-400
+    '#fb7185', // rose-400
+    '#c084fc', // purple-400
+    '#fb923c'  // orange-400
+  ]
+
+  const getColorForTitle = (title) => {
+    if (!title) return colors[0]
+    let hash = 0
+    for (let i = 0; i < title.length; i++) {
+      hash = title.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    const index = Math.abs(hash) % colors.length
+    return colors[index]
+  }
 
   // Form State
   const [formData, setFormData] = useState({
@@ -47,10 +68,11 @@ const SchedulePage = () => {
         title: event.title,
         start: `${event.event_date}T${event.start_time}`,
         end: `${event.event_date}T${event.end_time}`,
-        backgroundColor: event.color || '#fbbf24',
+        backgroundColor: getColorForTitle(event.title),
         borderColor: '#1f2937',
         extendedProps: {
-          description: event.description
+          description: event.description,
+          is_completed: event.is_completed || false
         }
       }))
 
@@ -62,21 +84,78 @@ const SchedulePage = () => {
     }
   }
 
+  const toggleEventCompletion = async (eventId, currentStatus) => {
+    try {
+      const newStatus = !currentStatus
+      const { error } = await supabase
+        .from('timetable')
+        .update({ is_completed: newStatus })
+        .eq('id', eventId)
+
+      if (error) throw error
+
+      // Si l'événement est complété, on peut ajouter de l'XP
+      if (newStatus) {
+        window.dispatchEvent(new CustomEvent('profileUpdated'))
+      }
+
+      // Mise à jour locale immédiate
+      setEvents(events.map(event => 
+        event.id === eventId 
+          ? { ...event, extendedProps: { ...event.extendedProps, is_completed: newStatus } }
+          : event
+      ))
+      
+      // Mise à jour des événements visibles pour le compteur
+      setVisibleEvents(visibleEvents.map(event => 
+        event.id === eventId 
+          ? { ...event, extendedProps: { ...event.extendedProps, is_completed: newStatus } }
+          : event
+      ))
+    } catch (error) {
+      console.error('Erreur lors du toggle completion:', error.message)
+    }
+  }
+
   const handleAddEvent = async (e) => {
     e.preventDefault()
     if (!userId) return
 
     try {
-      const { error } = await supabase
-        .from('timetable')
-        .insert([{
+      let eventsToInsert = []
+      
+      if (isRecurring) {
+        // Mode récurrent : 16 occurrences (S0 à S15)
+        for (let i = 0; i < 16; i++) {
+          const baseDate = new Date(formData.event_date)
+          const recurringDate = new Date(baseDate)
+          recurringDate.setDate(baseDate.getDate() + (i * 7))
+          
+          // Format YYYY-MM-DD
+          const formattedDate = recurringDate.toISOString().split('T')[0]
+          
+          eventsToInsert.push({
+            ...formData,
+            event_date: formattedDate,
+            user_id: userId
+          })
+        }
+      } else {
+        // Mode unique
+        eventsToInsert.push({
           ...formData,
           user_id: userId
-        }])
+        })
+      }
+
+      const { error } = await supabase
+        .from('timetable')
+        .insert(eventsToInsert)
 
       if (error) throw error
 
       setShowModal(false)
+      setIsRecurring(false)
       setFormData({ title: '', description: '', event_date: '', start_time: '', end_time: '', color: '#fbbf24' })
       fetchEvents(userId)
     } catch (error) {
@@ -85,9 +164,21 @@ const SchedulePage = () => {
   }
 
   const renderEventContent = (eventInfo) => {
+    const isCompleted = eventInfo.event.extendedProps.is_completed
     return (
-      <div className="p-1 overflow-hidden h-full">
-        <div className="font-black text-[10px] uppercase truncate">{eventInfo.event.title}</div>
+      <div className={`p-1 overflow-hidden h-full flex flex-col relative ${isCompleted ? 'opacity-40 grayscale' : ''}`}>
+        <div className="flex justify-between items-start gap-1">
+          <div className="font-black text-[10px] uppercase truncate flex-1">{eventInfo.event.title}</div>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleEventCompletion(eventInfo.event.id, isCompleted)
+            }}
+            className={`w-4 h-4 border-2 border-gray-800 rounded flex items-center justify-center transition-colors shrink-0 ${isCompleted ? 'bg-emerald-400' : 'bg-white hover:bg-gray-100'}`}
+          >
+            {isCompleted && <span className="text-[8px] font-black">✓</span>}
+          </button>
+        </div>
         {eventInfo.event.extendedProps.description && (
           <div className="text-[8px] font-bold opacity-80 leading-tight line-clamp-2">
             {eventInfo.event.extendedProps.description}
@@ -96,6 +187,9 @@ const SchedulePage = () => {
       </div>
     )
   }
+
+  const totalEvents = visibleEvents.length
+  const completedEvents = visibleEvents.filter(e => e.extendedProps.is_completed).length
 
   return (
     <div className="space-y-6">
@@ -108,12 +202,25 @@ const SchedulePage = () => {
             Planifiez vos sessions de quêtes.
           </p>
         </div>
-        <button 
-          onClick={() => setShowModal(true)}
-          className="bg-yellow-400 text-gray-900 font-black w-12 h-12 rounded-lg border-4 border-gray-800 shadow-[4px_4px_0px_rgba(31,41,55,1)] hover:translate-y-1 hover:shadow-none transition-all text-2xl"
-        >
-          +
-        </button>
+        <div className="flex items-center gap-6">
+          <div className="bevel-3d bg-white px-4 py-2 flex flex-col items-center">
+            <span className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Quêtes Temporelles</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-black text-gray-900">
+                {completedEvents} / {totalEvents}
+              </span>
+              {totalEvents > 0 && completedEvents === totalEvents && (
+                <span className="text-xl animate-bounce">👑</span>
+              )}
+            </div>
+          </div>
+          <button 
+            onClick={() => setShowModal(true)}
+            className="bg-yellow-400 text-gray-900 font-black w-12 h-12 rounded-lg border-4 border-gray-800 shadow-[4px_4px_0px_rgba(31,41,55,1)] hover:translate-y-1 hover:shadow-none transition-all text-2xl"
+          >
+            +
+          </button>
+        </div>
       </header>
 
       <div className="bg-white border-8 border-gray-800 rounded-xl p-4 shadow-[8px_8px_0px_rgba(31,41,55,1)] overflow-hidden">
@@ -136,6 +243,13 @@ const SchedulePage = () => {
             slotMaxTime="22:00:00"
             events={events}
             eventContent={renderEventContent}
+            datesSet={(dateInfo) => {
+              const visible = events.filter(event => {
+                const eventDate = new Date(event.start)
+                return eventDate >= dateInfo.start && eventDate < dateInfo.end
+              })
+              setVisibleEvents(visible)
+            }}
             height="700px"
             nowIndicator={true}
           />
@@ -202,6 +316,17 @@ const SchedulePage = () => {
                   />
                 </div>
               </div>
+
+              {/* Checkbox Rétro pour la récurrence */}
+              <div className="bevel-3d p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors" onClick={() => setIsRecurring(!isRecurring)}>
+                <div className={`w-6 h-6 border-4 border-gray-800 flex items-center justify-center font-black transition-colors ${isRecurring ? 'bg-emerald-400' : 'bg-white'}`}>
+                  {isRecurring && '✓'}
+                </div>
+                <span className="text-[10px] font-black text-gray-700 uppercase tracking-widest">
+                  🔁 Répéter chaque semaine (sur 15 semaines)
+                </span>
+              </div>
+
               <div className="flex gap-4 pt-4">
                 <button 
                   type="button"

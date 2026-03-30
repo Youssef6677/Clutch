@@ -52,10 +52,10 @@ const AvatarProfile = () => {
   }
 
   return (
-    <div className="bevel-3d-deep p-8 mb-12 glow-yellow border-yellow-400 bg-white/90 backdrop-blur-sm flex flex-col md:flex-row items-center gap-10">
+    <div className="bevel-3d-deep p-8 mb-12 glow-yellow border-yellow-400 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm flex flex-col md:flex-row items-center gap-10 transition-colors duration-300">
       {/* Avatar Frame Élaboré */}
       <div className="relative group">
-        <div className="w-40 h-40 bevel-3d-deep bg-gray-50 p-2 flex items-center justify-center overflow-hidden">
+        <div className="w-40 h-40 bevel-3d-deep bg-gray-50 dark:bg-slate-700 p-2 flex items-center justify-center overflow-hidden">
           <img 
             src={avatarUrl} 
             alt={`Avatar Level ${profile.level}`} 
@@ -75,7 +75,7 @@ const AvatarProfile = () => {
       <div className="flex-1 w-full space-y-6 text-center md:text-left">
         <div className="space-y-2">
           <div className="flex flex-col md:flex-row md:items-end gap-3">
-            <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+            <h2 className="text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
               HÉROS DE LA RÉVISION
             </h2>
             <span className="text-xl font-black text-yellow-500 uppercase tracking-widest animate-pulse drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
@@ -84,16 +84,16 @@ const AvatarProfile = () => {
           </div>
           
           <div className="flex justify-between items-end mb-1 px-1">
-            <span className="text-xs font-black text-gray-600 uppercase tracking-[0.2em]">EXPÉRIENCE ACTUELLE</span>
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">
+            <span className="text-xs font-black text-gray-600 dark:text-gray-400 uppercase tracking-[0.2em]">EXPÉRIENCE ACTUELLE</span>
+            <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest italic">
               PROCHAIN RANG DANS {XP_PER_LEVEL - (profile.xp % XP_PER_LEVEL)} XP
             </span>
           </div>
 
           {/* XP Bar Large & Brillante */}
-          <div className="w-full h-10 bevel-3d bg-gray-100 overflow-hidden relative shadow-[inset_0px_2px_10px_rgba(0,0,0,0.1)]">
+          <div className="w-full h-10 bevel-3d bg-gray-100 dark:bg-slate-700 overflow-hidden relative shadow-[inset_0px_2px_10px_rgba(0,0,0,0.1)]">
             <div 
-              className="h-full bg-yellow-400 border-r-4 border-gray-800 transition-all duration-700 ease-out relative shadow-[0_0_20px_rgba(250,204,21,0.5)]"
+              className="h-full bg-yellow-400 border-r-4 border-gray-800 dark:border-slate-600 transition-all duration-700 ease-out relative shadow-[0_0_20px_rgba(250,204,21,0.5)]"
               style={{ width: `${((profile.xp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100}%` }}
             >
               {/* Effet de brillance animé */}
@@ -106,7 +106,7 @@ const AvatarProfile = () => {
             
             {/* Texte XP au centre de la barre */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-xs font-black text-gray-900 mix-blend-overlay uppercase tracking-[0.5em]">
+              <span className="text-xs font-black text-gray-900 dark:text-slate-900 mix-blend-overlay uppercase tracking-[0.5em]">
                 {profile.xp % XP_PER_LEVEL} / {XP_PER_LEVEL}
               </span>
             </div>
