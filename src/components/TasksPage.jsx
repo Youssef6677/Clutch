@@ -160,57 +160,57 @@ const TasksPage = () => {
   const getImportanceBadge = (level) => {
     switch (level) {
       case 'Faible':
-        return 'bg-emerald-400'
+        return 'bg-emerald-400 text-gray-900'
       case 'Moyenne':
-        return 'bg-orange-400'
+        return 'bg-orange-400 text-gray-900'
       case 'Haute':
         return 'bg-rose-500 text-white'
       default:
-        return 'bg-gray-400'
+        return 'bg-gray-400 text-gray-900'
     }
   }
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-500 pb-20">
+    <div className="space-y-10 animate-in fade-in duration-500 pb-20 transition-colors duration-300">
       {/* Message de récompense XP */}
       {xpMessage && (
-        <div className="fixed top-20 right-10 z-50 bg-yellow-400 border-4 border-gray-800 px-6 py-3 rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce font-black uppercase tracking-widest">
+        <div className="fixed top-24 right-10 z-50 bg-yellow-400 border-4 border-gray-800 px-6 py-3 rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce font-black uppercase tracking-widest text-gray-900">
           {xpMessage}
         </div>
       )}
 
-      <header className="border-l-8 border-gray-800 pl-6 py-2">
-        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight" style={{ fontFamily: 'monospace' }}>
+      <header className="border-l-8 border-gray-800 dark:border-yellow-400 pl-6 py-2">
+        <h2 className="text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tight drop-shadow-sm" style={{ fontFamily: 'monospace' }}>
           ⚔️ Journal de Quêtes
         </h2>
-        <p className="mt-2 text-lg font-bold text-gray-600 uppercase tracking-widest">
+        <p className="mt-2 text-lg font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
           Accomplissez vos objectifs pour gagner de l'XP.
         </p>
       </header>
 
       {/* Formulaire Rétro */}
-      <section className="bg-white border-4 border-gray-800 rounded-lg p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <h3 className="text-xl font-black text-gray-900 mb-6 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
-          Nouvelle Quête
+      <section className="bevel-3d-deep p-8 bg-white dark:bg-slate-800 transition-colors duration-300">
+        <h3 className="text-xl font-black text-gray-900 dark:text-white mb-6 uppercase tracking-tighter flex items-center gap-2" style={{ fontFamily: 'monospace' }}>
+          <span className="text-2xl">📝</span> Nouvelle Quête
         </h3>
         <form onSubmit={addTask} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-3">
-            <label className="block text-xs font-black text-gray-700 uppercase mb-2">Titre de la quête *</label>
+            <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Titre de la quête *</label>
             <input 
               type="text" 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ex: Réviser le chapitre sur les ondes..."
-              className="w-full border-4 border-gray-800 p-3 rounded focus:outline-none focus:ring-0 font-bold text-lg"
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold text-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 transition-all shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)]"
               required
             />
           </div>
           <div>
-            <label className="block text-xs font-black text-gray-700 uppercase mb-2">Importance</label>
+            <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Importance</label>
             <select 
               value={importance}
               onChange={(e) => setImportance(e.target.value)}
-              className="w-full border-4 border-gray-800 p-3 rounded focus:outline-none font-bold bg-white"
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-all cursor-pointer shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)]"
             >
               <option value="Faible">Faible (+10 XP)</option>
               <option value="Moyenne">Moyenne (+20 XP)</option>
@@ -218,19 +218,19 @@ const TasksPage = () => {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-xs font-black text-gray-700 uppercase mb-2">Lien optionnel (Ressource, PDF...)</label>
+            <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Lien optionnel (Ressource, PDF...)</label>
             <input 
               type="url" 
               value={link}
               onChange={(e) => setLink(e.target.value)}
               placeholder="https://..."
-              className="w-full border-4 border-gray-800 p-3 rounded focus:outline-none font-bold"
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 transition-all shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)]"
             />
           </div>
           <button 
             type="submit"
             disabled={!userId}
-            className="md:col-span-3 bg-emerald-400 text-gray-900 font-black py-4 rounded border-b-8 border-emerald-600 hover:border-b-0 hover:translate-y-2 active:scale-95 transition-all uppercase tracking-[0.2em] text-sm"
+            className="md:col-span-3 bg-emerald-400 dark:bg-emerald-500 text-gray-900 dark:text-white font-black py-5 rounded-xl border-b-8 border-emerald-600 dark:border-emerald-700 hover:border-b-0 hover:translate-y-2 active:scale-95 transition-all uppercase tracking-[0.2em] text-lg shadow-lg disabled:opacity-50"
           >
             ➕ Ajouter la Quête au Journal
           </button>
@@ -240,54 +240,54 @@ const TasksPage = () => {
       {/* Liste des Quêtes */}
       <section className="space-y-6">
         <div className="flex items-center gap-4">
-          <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
+          <h3 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
             Quêtes Actuelles
           </h3>
-          <div className="h-1 flex-1 bg-gray-800"></div>
+          <div className="h-1 flex-1 bg-gray-800 dark:bg-slate-700 rounded-full opacity-20"></div>
         </div>
         
         {isLoading ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-20 bg-gray-100 border-4 border-gray-200 rounded-lg animate-pulse"></div>
+              <div key={i} className="h-24 bg-gray-100 dark:bg-slate-800 border-4 border-gray-200 dark:border-slate-700 rounded-xl animate-pulse"></div>
             ))}
           </div>
         ) : tasks.length === 0 ? (
-          <div className="bg-gray-50 border-4 border-dashed border-gray-300 p-10 rounded-lg text-center">
-            <p className="text-gray-400 font-black uppercase tracking-widest italic">
+          <div className="bg-gray-50 dark:bg-slate-900/50 border-4 border-dashed border-gray-300 dark:border-slate-700 p-16 rounded-2xl text-center">
+            <p className="text-gray-400 dark:text-gray-600 font-black uppercase tracking-[0.3em] italic text-xl">
               Le journal est vide. Repose-toi, héros.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-6">
             {tasks.map((task) => (
               <div 
                 key={task.id}
-                className={`bg-white border-4 border-gray-800 rounded-lg p-5 flex flex-col md:flex-row items-center gap-6 transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${task.is_completed ? 'opacity-50 grayscale' : 'hover:-translate-y-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]'}`}
+                className={`bevel-3d-deep p-6 flex flex-col md:flex-row items-center gap-6 transition-all bg-white dark:bg-slate-800 ${task.is_completed ? 'opacity-40 grayscale pointer-events-none' : 'hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(251,191,36,0.15)] dark:hover:shadow-[0_0_40px_rgba(251,191,36,0.1)]'}`}
               >
                 {/* Bouton Accomplir */}
                 {!task.is_completed ? (
                   <button 
                     onClick={() => completeTask(task.id, task.importance)}
-                    className="group relative flex flex-col items-center justify-center"
+                    className="group relative flex flex-col items-center justify-center shrink-0"
                   >
-                    <div className="w-14 h-14 bg-white border-4 border-gray-800 rounded flex items-center justify-center text-2xl group-hover:bg-emerald-400 transition-colors">
+                    <div className="w-16 h-16 bg-white dark:bg-slate-900 border-4 border-gray-800 dark:border-slate-600 rounded-xl flex items-center justify-center text-3xl group-hover:bg-emerald-400 group-hover:border-emerald-600 transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.1)]">
                       ⚔️
                     </div>
-                    <span className="text-[8px] font-black uppercase mt-1">Accomplir</span>
+                    <span className="text-[10px] font-black uppercase mt-2 text-gray-500 dark:text-gray-400 tracking-tighter group-hover:text-emerald-500">Accomplir</span>
                   </button>
                 ) : (
-                  <div className="w-14 h-14 bg-emerald-400 border-4 border-gray-800 rounded flex items-center justify-center text-2xl">
+                  <div className="w-16 h-16 bg-emerald-400 border-4 border-emerald-600 rounded-xl flex items-center justify-center text-3xl shadow-inner">
                     ✅
                   </div>
                 )}
                 
                 <div className="flex-1 text-center md:text-left min-w-0">
-                  <h4 className={`text-xl font-black uppercase tracking-tight truncate ${task.is_completed ? 'line-through' : ''}`} style={{ fontFamily: 'monospace' }}>
+                  <h4 className={`text-2xl font-black uppercase tracking-tight truncate dark:text-white ${task.is_completed ? 'line-through' : ''}`} style={{ fontFamily: 'monospace' }}>
                     {task.title}
                   </h4>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-2">
-                    <span className={`px-3 py-1 border-2 border-gray-800 text-[10px] font-black uppercase rounded shadow-[2px_2px_0px_rgba(0,0,0,1)] ${getImportanceBadge(task.importance)}`}>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-3">
+                    <span className={`px-4 py-1 border-2 border-gray-800 dark:border-slate-600 text-[10px] font-black uppercase rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] ${getImportanceBadge(task.importance)}`}>
                       {task.importance}
                     </span>
                     {task.link && (
@@ -295,23 +295,23 @@ const TasksPage = () => {
                         href={task.link} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="px-3 py-1 border-2 border-gray-800 text-[10px] font-black uppercase rounded bg-blue-400 hover:bg-blue-500 transition-colors shadow-[2px_2px_0px_rgba(0,0,0,1)] flex items-center gap-1"
+                        className="px-4 py-1 border-2 border-gray-800 dark:border-slate-600 text-[10px] font-black uppercase rounded-lg bg-blue-400 text-gray-900 hover:bg-blue-500 transition-colors shadow-[3px_3px_0px_rgba(0,0,0,1)] flex items-center gap-2"
                       >
-                        🔗 Lien
+                        🔗 Ressource
                       </a>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 shrink-0">
                   {task.is_completed && (
-                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                    <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] animate-pulse">
                       Terminé
                     </span>
                   )}
                   <button 
                     onClick={() => deleteTask(task.id)}
-                    className="w-10 h-10 flex items-center justify-center bg-rose-100 text-rose-500 border-2 border-rose-500 rounded hover:bg-rose-500 hover:text-white transition-all shadow-[2px_2px_0px_rgba(244,63,94,0.3)]"
+                    className="w-12 h-12 flex items-center justify-center bg-rose-100 dark:bg-rose-900/30 text-rose-500 border-2 border-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-[3px_3px_0px_rgba(244,63,94,0.2)]"
                     title="Supprimer la quête"
                   >
                     🗑️

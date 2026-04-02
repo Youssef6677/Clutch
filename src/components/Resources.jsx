@@ -100,19 +100,19 @@ const Resources = ({ subject, onBack }) => {
   }
 
   const ResourceItem = ({ resource }) => (
-    <div className={`flex items-center gap-4 bg-white border-4 border-gray-800 p-3 rounded-lg shadow-[4px_4px_0px_rgba(31,41,55,1)] transition-all ${resource.is_completed ? 'opacity-60 grayscale' : ''} ${selectedResource?.id === resource.id ? 'ring-4 ring-yellow-400' : ''}`}>
+    <div className={`flex items-center gap-4 bg-white dark:bg-slate-800 border-4 border-gray-800 dark:border-slate-700 p-3 rounded-lg shadow-[4px_4px_0px_rgba(31,41,55,1)] dark:shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all ${resource.is_completed ? 'opacity-50 grayscale' : 'hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_rgba(31,41,55,1)] dark:hover:shadow-[6px_6px_0px_rgba(0,0,0,1)]'} ${selectedResource?.id === resource.id ? 'ring-4 ring-yellow-400 dark:ring-yellow-500' : ''}`}>
       <button 
         onClick={() => toggleComplete(resource.id, resource.is_completed)}
-        className={`w-6 h-6 border-4 border-gray-800 rounded flex items-center justify-center font-black transition-colors ${resource.is_completed ? 'bg-emerald-400' : 'bg-white hover:bg-gray-100'}`}
+        className={`w-7 h-7 border-4 border-gray-800 dark:border-slate-600 rounded flex items-center justify-center font-black transition-colors ${resource.is_completed ? 'bg-emerald-400 dark:bg-emerald-500' : 'bg-white dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
       >
-        {resource.is_completed && '✓'}
+        {resource.is_completed && <span className="text-gray-900 dark:text-white">✓</span>}
       </button>
       
       <div 
         className="flex-1 min-w-0 cursor-pointer"
         onClick={() => setSelectedResource(resource)}
       >
-        <h4 className={`text-sm font-black uppercase tracking-tight truncate ${resource.is_completed ? 'line-through' : ''}`} style={{ fontFamily: 'monospace' }}>
+        <h4 className={`text-sm font-black uppercase tracking-tight truncate dark:text-white ${resource.is_completed ? 'line-through' : ''}`} style={{ fontFamily: 'monospace' }}>
           {resource.title}
         </h4>
       </div>
@@ -120,13 +120,13 @@ const Resources = ({ subject, onBack }) => {
       <div className="flex items-center gap-2">
         <button 
           onClick={() => setSelectedResource(resource)}
-          className="px-3 py-1 bg-blue-400 border-2 border-gray-800 text-[10px] font-black uppercase rounded shadow-[2px_2px_0px_rgba(31,41,55,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
+          className="px-3 py-1 bg-blue-400 dark:bg-blue-500 text-gray-900 dark:text-white border-2 border-gray-800 dark:border-slate-700 text-[10px] font-black uppercase rounded shadow-[2px_2px_0px_rgba(31,41,55,1)] dark:shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
         >
           Lire
         </button>
         <button 
           onClick={() => deleteResource(resource.id)}
-          className="text-rose-500 hover:scale-110 transition-transform font-black text-xl"
+          className="text-rose-500 dark:text-rose-400 hover:scale-110 transition-transform font-black text-xl px-1"
         >
           ×
         </button>
@@ -137,86 +137,91 @@ const Resources = ({ subject, onBack }) => {
   const categories = ['Cours', 'TD', 'Annales']
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-8 border-gray-800 pl-6 py-2">
+    <div className="space-y-8 animate-in fade-in duration-500 transition-colors duration-300">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-8 border-gray-800 dark:border-yellow-400 pl-6 py-2">
         <div>
-          <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tight" style={{ fontFamily: 'monospace' }}>
+          <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tight drop-shadow-sm" style={{ fontFamily: 'monospace' }}>
             💎 Ressources : {subject.name}
           </h2>
-          <p className="mt-1 text-sm font-bold text-gray-600 uppercase tracking-widest">
+          <p className="mt-1 text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
             Organisez vos documents d'étude.
           </p>
         </div>
         <button 
           onClick={onBack}
-          className="self-start bg-gray-100 border-4 border-gray-800 px-4 py-2 font-black uppercase tracking-widest shadow-[4px_4px_0px_rgba(31,41,55,1)] hover:translate-y-1 hover:shadow-none transition-all"
+          className="self-start bg-white dark:bg-slate-800 border-4 border-gray-800 dark:border-slate-700 px-6 py-2 font-black uppercase tracking-widest shadow-[4px_4px_0px_rgba(31,41,55,1)] dark:shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all dark:text-white"
         >
           ⬅️ Retour
         </button>
       </header>
 
       {/* Formulaire d'ajout */}
-      <section className="bg-white border-4 border-gray-800 rounded-lg p-6 shadow-[4px_4px_0px_rgba(31,41,55,1)]">
-        <h3 className="text-lg font-black text-gray-900 mb-4 uppercase tracking-tighter" style={{ fontFamily: 'monospace' }}>
-          Nouvelle Ressource
+      <section className="bevel-3d-deep p-6 bg-white dark:bg-slate-800 transition-colors">
+        <h3 className="text-lg font-black text-gray-900 dark:text-white mb-6 uppercase tracking-tighter flex items-center gap-2" style={{ fontFamily: 'monospace' }}>
+          ✨ Nouvelle Ressource
         </h3>
-        <form onSubmit={addResource} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form onSubmit={addResource} className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-1">
+            <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Titre</label>
             <input 
               type="text" 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Titre (ex: Chapitre 1)"
-              className="w-full border-4 border-gray-800 p-2 rounded focus:outline-none font-bold text-sm"
+              placeholder="Ex: Chapitre 1..."
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold text-sm bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)] transition-all"
               required
             />
           </div>
           <div className="md:col-span-1">
+            <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Lien (URL)</label>
             <input 
               type="url" 
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Lien (URL)"
-              className="w-full border-4 border-gray-800 p-2 rounded focus:outline-none font-bold text-sm"
+              placeholder="https://..."
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold text-sm bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)] transition-all"
               required
             />
           </div>
           <div>
+            <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase mb-2 tracking-widest">Catégorie</label>
             <select 
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full border-4 border-gray-800 p-2 rounded focus:outline-none font-bold text-sm bg-white"
+              className="w-full border-4 border-gray-800 dark:border-slate-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 font-bold text-sm bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-all cursor-pointer shadow-[inset_4px_4px_0px_rgba(0,0,0,0.05)]"
             >
               {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
-          <button 
-            type="submit"
-            disabled={!userId}
-            className="bg-emerald-400 text-gray-900 font-black py-2 rounded border-b-4 border-emerald-600 hover:border-b-0 hover:translate-y-1 transition-all uppercase text-xs tracking-widest"
-          >
-            Ajouter
-          </button>
+          <div className="flex items-end">
+            <button 
+              type="submit"
+              disabled={!userId}
+              className="w-full bg-emerald-400 dark:bg-emerald-500 text-gray-900 dark:text-white font-black py-3 rounded-xl border-b-8 border-emerald-600 dark:border-emerald-700 hover:border-b-0 hover:translate-y-2 active:scale-95 transition-all uppercase tracking-[0.2em] text-xs shadow-lg disabled:opacity-50"
+            >
+              ➕ Ajouter
+            </button>
+          </div>
         </form>
       </section>
 
       {/* Layout principal */}
-      <div className={`grid grid-cols-1 ${selectedResource ? 'lg:grid-cols-12' : 'lg:grid-cols-3'} gap-8`}>
+      <div className={`grid grid-cols-1 ${selectedResource ? 'lg:grid-cols-12' : 'lg:grid-cols-3'} gap-10`}>
         {/* Colonne Liste des ressources */}
-        <div className={`${selectedResource ? 'lg:col-span-4' : 'lg:col-span-3'} space-y-8`}>
+        <div className={`${selectedResource ? 'lg:col-span-4' : 'lg:col-span-3'} space-y-10`}>
           {categories.map(cat => (
-            <div key={cat} className="space-y-4">
-              <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter border-b-4 border-gray-800 pb-2 inline-block" style={{ fontFamily: 'monospace' }}>
-                📁 {cat}
+            <div key={cat} className="space-y-6">
+              <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter border-b-4 border-gray-800 dark:border-slate-700 pb-2 inline-block flex items-center gap-2" style={{ fontFamily: 'monospace' }}>
+                <span className="text-lg opacity-60">📁</span> {cat}
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {loading ? (
-                  <div className="animate-pulse space-y-2">
-                    <div className="h-12 bg-gray-200 rounded"></div>
-                    <div className="h-12 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse space-y-3">
+                    <div className="h-16 bg-gray-100 dark:bg-slate-800 rounded-xl border-4 border-gray-200 dark:border-slate-700"></div>
+                    <div className="h-16 bg-gray-100 dark:bg-slate-800 rounded-xl border-4 border-gray-200 dark:border-slate-700"></div>
                   </div>
                 ) : resources.filter(r => r.category === cat).length === 0 ? (
-                  <p className="text-gray-400 text-xs font-bold italic">Aucune ressource ici.</p>
+                  <p className="text-gray-400 dark:text-slate-600 text-xs font-black uppercase tracking-widest italic border-4 border-dashed border-gray-200 dark:border-slate-800 p-6 rounded-xl text-center">Aucune ressource.</p>
                 ) : (
                   resources
                     .filter(r => r.category === cat)
@@ -230,32 +235,35 @@ const Resources = ({ subject, onBack }) => {
         {/* Colonne Pupitre de Lecture */}
         {selectedResource && (
           <div className="lg:col-span-8 sticky top-4">
-            <div className="bg-white border-4 border-gray-800 rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col h-[60vh]">
-              <div className="bg-gray-800 p-2 flex justify-between items-center">
-                <span className="text-white text-xs font-black uppercase tracking-widest ml-2" style={{ fontFamily: 'monospace' }}>
+            <div className="bg-white dark:bg-slate-800 border-8 border-gray-800 dark:border-slate-700 rounded-2xl shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col h-[65vh] overflow-hidden transition-all">
+              <div className="bg-gray-800 dark:bg-slate-900 p-3 flex justify-between items-center border-b-4 border-gray-800 dark:border-slate-700">
+                <span className="text-white text-sm font-black uppercase tracking-[0.2em] ml-3" style={{ fontFamily: 'monospace' }}>
                   📜 Pupitre de Lecture
                 </span>
                 <button 
                   onClick={() => setSelectedResource(null)}
-                  className="w-8 h-8 bg-rose-500 text-white border-2 border-gray-950 flex items-center justify-center font-black hover:bg-rose-600 active:translate-y-0.5 transition-all"
+                  className="w-10 h-10 bg-rose-500 text-white border-4 border-gray-950 dark:border-slate-700 flex items-center justify-center font-black hover:bg-rose-600 active:translate-y-1 transition-all rounded-lg"
                 >
                   ×
                 </button>
               </div>
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[url('https://www.transparenttextures.com/patterns/papyros.png')]">
-                <h3 className="text-4xl font-black text-gray-900 uppercase mb-4 tracking-tighter leading-tight" style={{ fontFamily: 'monospace' }}>
+              <div className="flex-1 flex flex-col items-center justify-center p-12 text-center bg-[url('https://www.transparenttextures.com/patterns/papyros.png')] dark:bg-slate-900/50 relative">
+                {/* Texture Overlay for Dark Mode */}
+                <div className="absolute inset-0 dark:bg-slate-950/20 pointer-events-none"></div>
+                
+                <h3 className="text-5xl font-black text-gray-900 dark:text-white uppercase mb-6 tracking-tighter leading-tight relative z-10" style={{ fontFamily: 'monospace' }}>
                   {selectedResource.title}
                 </h3>
-                <div className="w-24 h-2 bg-gray-800 mb-6"></div>
-                <p className="text-gray-600 font-bold uppercase tracking-widest text-sm mb-8">
-                  Ce document est scellé par la magie de Google.<br/>
-                  Déverrouillez-le pour poursuivre votre quête.
+                <div className="w-32 h-3 bg-gray-800 dark:bg-yellow-500 mb-8 relative z-10"></div>
+                <p className="text-gray-600 dark:text-gray-400 font-bold uppercase tracking-[0.2em] text-sm mb-10 leading-relaxed relative z-10">
+                  Ce document est scellé par la magie des archives.<br/>
+                  Utilisez votre grimoire pour débloquer son savoir.
                 </p>
                 <a 
                   href={selectedResource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-yellow-400 text-gray-900 font-black px-8 py-4 border-4 border-gray-800 shadow-[6px_6px_0px_0px_rgba(31,41,55,1)] hover:translate-y-1 hover:shadow-none active:scale-95 transition-all uppercase tracking-widest flex items-center gap-3"
+                  className="bg-yellow-400 dark:bg-yellow-500 text-gray-900 dark:text-white font-black px-12 py-5 border-4 border-gray-800 dark:border-slate-700 shadow-[8px_8px_0px_0px_rgba(31,41,55,1)] dark:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none active:scale-95 transition-all uppercase tracking-[0.3em] text-lg flex items-center gap-4 relative z-10"
                 >
                   Ouvrir le document 🔗
                 </a>

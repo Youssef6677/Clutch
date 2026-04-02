@@ -1,8 +1,62 @@
 .fc { font-family: 'monospace', sans-serif; }
-.fc-header-toolbar { padding: 1rem; text-transform: uppercase; font-weight: 900; }
-.fc-col-header-cell { background: #1f2937; color: white; padding: 10px 0 !important; }
-.fc-timegrid-slot { height: 3rem !important; }
-.fc-event { border-width: 3px !important; border-radius: 4px !important; box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
+.fc-header-toolbar { padding: 1.5rem; text-transform: uppercase; font-weight: 900; }
+.fc-col-header-cell { background: #1f2937; color: white; padding: 12px 0 !important; border: 2px solid #000 !important; }
+.fc-timegrid-slot { height: 4rem !important; }
+.fc-event { border-width: 3px !important; border-radius: 8px !important; box-shadow: 3px 3px 0px rgba(0,0,0,0.2); transition: transform 0.2s; }
+.fc-event:hover { transform: scale(1.02); z-index: 50; }
 .fc-v-event { background-color: var(--fc-event-bg-color); }
 .fc-theme-standard td, .fc-theme-standard th { border-color: #e5e7eb !important; border-width: 2px !important; }
 .fc-timegrid-now-indicator-line { border-color: #ef4444 !important; border-width: 3px !important; }
+
+/* Dark Mode Overrides */
+.dark .calendar-dark .fc {
+  background-color: transparent;
+  color: #e2e8f0;
+}
+
+.dark .calendar-dark .fc-theme-standard td, 
+.dark .calendar-dark .fc-theme-standard th {
+  border-color: #334155 !important;
+}
+
+.dark .calendar-dark .fc-col-header-cell {
+  background: #0f172a;
+  border-color: #334155 !important;
+}
+
+.dark .calendar-dark .fc-timegrid-slot-label,
+.dark .calendar-dark .fc-timegrid-axis-cushion {
+  color: #94a3b8;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.dark .calendar-dark .fc-toolbar-title {
+  color: #f8fafc;
+}
+
+.dark .calendar-dark .fc-button {
+  background-color: #1e293b !important;
+  border: 4px solid #334155 !important;
+  color: white !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  box-shadow: 4px 4px 0px rgba(0,0,0,1) !important;
+}
+
+.dark .calendar-dark .fc-button:hover {
+  background-color: #334155 !important;
+  transform: translateY(2px);
+  box-shadow: none !important;
+}
+
+.dark .calendar-dark .fc-button-active {
+  background-color: #334155 !important;
+  box-shadow: inset 4px 4px 0px rgba(0,0,0,0.2) !important;
+}
+
+.dark .calendar-dark .fc-timegrid-now-indicator-arrow {
+  border-color: #ef4444 !important;
+}
+
